@@ -6924,11 +6924,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "C:\\BlackForest\\Nachhilfe\\Nachhilfe\\Nachhilfe.csproj",
+      "projectUniqueName": "C:\\BlackForest\\BlackForestHackathon\\Nachhilfe\\Nachhilfe\\Nachhilfe.csproj",
       "projectName": "Nachhilfe",
-      "projectPath": "C:\\BlackForest\\Nachhilfe\\Nachhilfe\\Nachhilfe.csproj",
+      "projectPath": "C:\\BlackForest\\BlackForestHackathon\\Nachhilfe\\Nachhilfe\\Nachhilfe.csproj",
       "packagesPath": "C:\\Users\\Sebastian Hoch\\.nuget\\packages\\",
-      "outputPath": "C:\\BlackForest\\Nachhilfe\\Nachhilfe\\obj\\",
+      "outputPath": "C:\\BlackForest\\BlackForestHackathon\\Nachhilfe\\Nachhilfe\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Sebastian Hoch\\AppData\\Roaming\\NuGet\\NuGet.Config",
