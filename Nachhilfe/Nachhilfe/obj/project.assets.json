@@ -2,6 +2,19 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v1.0": {
+      "Alexa.NET/1.1.0": {
+        "type": "package",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "compile": {
+          "lib/netstandard1.6/Alexa.NET.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard1.6/Alexa.NET.dll": {}
+        }
+      },
       "Amazon.Lambda.Core/1.0.0": {
         "type": "package",
         "dependencies": {
@@ -2189,6 +2202,16 @@
     }
   },
   "libraries": {
+    "Alexa.NET/1.1.0": {
+      "sha512": "JPF+QACjezOnn7+hIQNcG1RmbHRLJBFlVu+rb8kM1LHyBZMl3mmyBW8bWRJArwUOujYcOXuPuVZWV2H6ZS0hjA==",
+      "type": "package",
+      "path": "alexa.net/1.1.0",
+      "files": [
+        "alexa.net.1.1.0.nupkg.sha512",
+        "alexa.net.nuspec",
+        "lib/netstandard1.6/Alexa.NET.dll"
+      ]
+    },
     "Amazon.Lambda.Core/1.0.0": {
       "sha512": "+pBYGHaOaDAhu2j8BA5MhKLwxZM7lgmTSroGyCzEqWMBx+uc+QtpED2ShCAkKjKeedXH+LvJpQAUkEtW7rfcgQ==",
       "type": "package",
@@ -6910,9 +6933,11 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v1.0": [
+      "Alexa.NET >= 1.1.0",
       "Amazon.Lambda.Core >= 1.0.0",
       "Amazon.Lambda.Serialization.Json >= 1.1.0",
-      "Microsoft.NETCore.App >= 1.0.5"
+      "Microsoft.NETCore.App >= 1.0.5",
+      "Newtonsoft.Json >= 9.0.1"
     ]
   },
   "packageFolders": {
@@ -6938,7 +6963,6 @@
         "netcoreapp1.0"
       ],
       "sources": {
-        "\\\\srv20tfs\\NuGetPakete": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -6950,6 +6974,10 @@
     "frameworks": {
       "netcoreapp1.0": {
         "dependencies": {
+          "Alexa.NET": {
+            "target": "Package",
+            "version": "1.1.0"
+          },
           "Amazon.Lambda.Core": {
             "target": "Package",
             "version": "1.0.0"
@@ -6962,6 +6990,10 @@
           "Amazon.Lambda.Serialization.Json": {
             "target": "Package",
             "version": "1.1.0"
+          },
+          "Newtonsoft.Json": {
+            "target": "Package",
+            "version": "9.0.1"
           }
         }
       }

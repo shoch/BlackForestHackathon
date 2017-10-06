@@ -6,3 +6,18 @@ C:\BlackForest\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.csproj.Core
 C:\BlackForest\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.AssemblyInfo.cs
 C:\BlackForest\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.dll
 C:\BlackForest\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.pdb
+C:\Users\Sebastian Hoch\Desktop\Nachhilfe\Nachhilfe\bin\Debug\netcoreapp1.0\Nachhilfe.deps.json
+C:\Users\Sebastian Hoch\Desktop\Nachhilfe\Nachhilfe\bin\Debug\netcoreapp1.0\Nachhilfe.dll
+C:\Users\Sebastian Hoch\Desktop\Nachhilfe\Nachhilfe\bin\Debug\netcoreapp1.0\Nachhilfe.pdb
+C:\Users\Sebastian Hoch\Desktop\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.csproj.CoreCompileInputs.cache
+C:\Users\Sebastian Hoch\Desktop\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.AssemblyInfo.cs
+C:\Users\Sebastian Hoch\Desktop\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.dll
+C:\Users\Sebastian Hoch\Desktop\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.pdb
+C:\BlackForest\BlackForestHackathon\Nachhilfe\Nachhilfe\bin\Debug\netcoreapp1.0\Nachhilfe.deps.json
+C:\BlackForest\BlackForestHackathon\Nachhilfe\Nachhilfe\bin\Debug\netcoreapp1.0\Nachhilfe.dll
+C:\BlackForest\BlackForestHackathon\Nachhilfe\Nachhilfe\bin\Debug\netcoreapp1.0\Nachhilfe.pdb
+C:\BlackForest\BlackForestHackathon\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.csprojResolveAssemblyReference.cache
+C:\BlackForest\BlackForestHackathon\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.csproj.CoreCompileInputs.cache
+C:\BlackForest\BlackForestHackathon\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.AssemblyInfo.cs
+C:\BlackForest\BlackForestHackathon\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.dll
+C:\BlackForest\BlackForestHackathon\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.pdb

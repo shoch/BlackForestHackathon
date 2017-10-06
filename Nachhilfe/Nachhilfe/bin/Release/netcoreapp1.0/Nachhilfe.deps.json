@@ -1,18 +1,28 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v1.0",
-    "signature": "ef0d24d6316d6a56ab65b37bce4f5f6a0e5de87b"
+    "signature": "07d31b422fe1db2f1fe60287c82ad5d87e5b3ab7"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v1.0": {
       "nachhilfe/1.0.0": {
         "dependencies": {
+          "Alexa.NET": "1.1.0",
           "Amazon.Lambda.Core": "1.0.0",
-          "Amazon.Lambda.Serialization.Json": "1.1.0"
+          "Amazon.Lambda.Serialization.Json": "1.1.0",
+          "Newtonsoft.Json": "9.0.1"
         },
         "runtime": {
           "Nachhilfe.dll": {}
+        }
+      },
+      "alexa.net/1.1.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "9.0.1"
+        },
+        "runtime": {
+          "lib/netstandard1.6/Alexa.NET.dll": {}
         }
       },
       "amazon.lambda.core/1.0.0": {
@@ -49,6 +59,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "alexa.net/1.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JPF+QACjezOnn7+hIQNcG1RmbHRLJBFlVu+rb8kM1LHyBZMl3mmyBW8bWRJArwUOujYcOXuPuVZWV2H6ZS0hjA==",
+      "path": "alexa.net/1.1.0",
+      "hashPath": "alexa.net.1.1.0.nupkg.sha512"
     },
     "amazon.lambda.core/1.0.0": {
       "type": "package",
