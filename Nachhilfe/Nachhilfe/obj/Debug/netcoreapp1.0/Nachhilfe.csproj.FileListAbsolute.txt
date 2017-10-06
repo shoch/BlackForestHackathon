@@ -1,0 +1,8 @@
+C:\BlackForest\Nachhilfe\Nachhilfe\bin\Debug\netcoreapp1.0\Nachhilfe.deps.json
+C:\BlackForest\Nachhilfe\Nachhilfe\bin\Debug\netcoreapp1.0\Nachhilfe.dll
+C:\BlackForest\Nachhilfe\Nachhilfe\bin\Debug\netcoreapp1.0\Nachhilfe.pdb
+C:\BlackForest\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.csprojResolveAssemblyReference.cache
+C:\BlackForest\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.csproj.CoreCompileInputs.cache
+C:\BlackForest\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.AssemblyInfo.cs
+C:\BlackForest\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.dll
+C:\BlackForest\Nachhilfe\Nachhilfe\obj\Debug\netcoreapp1.0\Nachhilfe.pdb
