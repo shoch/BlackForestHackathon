@@ -58,7 +58,7 @@ namespace Nachhilfe
                 State = (eStates)Enum.Parse(typeof(eStates), StateObject.ToString());
             }
 
-           // return MakeSkillResponse($"Unbekannter requestType", true, input.Session.Attributes);
+            // return MakeSkillResponse($"Unbekannter requestType", true, input.Session.Attributes);
             //********************************************* 
 
 
@@ -105,7 +105,8 @@ namespace Nachhilfe
                     var Math = new MathAdditionExerciseProvider(new Random(), 2, 1, 10);
                     var e = Math.NextExercise();
                     resultText += e.GetQuestion();
-                    input.Session.Attributes.Add("MathObject", e.GetSolution());
+                    //  input.Session.Attributes.Add("MathObject", e.GetSolution());
+                    input.Session.Attributes.Add("MathObject", e.Solution());
                     break;
                 case "UserResponseMathe":
                     // input.Session.Attributes["State"] = eStates.Result.ToString();
@@ -118,14 +119,16 @@ namespace Nachhilfe
                     {
                         resultText = "Fehler von uns ";
                     }
-
-                    if (res.ToString()  == resValueMath)
-                    {
-                        resultText = "Richtig";
-                    }
                     else
                     {
-                        resultText = "Falsch Die korrekte Antwort ist " + res.ToString();
+                        if (res.ToString() == resValueMath)
+                        {
+                            resultText = "Richtig";
+                        }
+                        else
+                        {
+                            resultText = "Falsch Die korrekte Antwort ist " + res.ToString();
+                        }
                     }
 
                     break;
@@ -152,14 +155,20 @@ namespace Nachhilfe
                 response.Reprompt = new Reprompt() { OutputSpeech = new PlainTextOutputSpeech() { Text = repromptText } };
             }
 
-            //var d = new Dictionary<string, object>();
-            //d.Add("test", 1); 
+            var d = new Dictionary<string, object>();
+            //  d.Add("test", 1);
+
+            //var Math = new MathAdditionExerciseProvider(new Random(), 2, 1, 10);
+            //var e = Math.NextExercise();
+
+            //d.Add("MathObject", e);
 
             var skillResponse = new SkillResponse
             {
 
                 Response = response,
                 SessionAttributes = sessionAttributes,
+                // SessionAttributes = d,
                 Version = "1.0"
             };
 
