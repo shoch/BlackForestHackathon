@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Nachhilfe
 {
-    interface IExerciseProvider<IExercise>
+    public interface IExerciseProvider<IExercise>
     {
         IExercise NextExercise();
     }
