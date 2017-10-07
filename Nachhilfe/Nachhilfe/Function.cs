@@ -16,6 +16,16 @@ namespace Nachhilfe
 {
     public class Function
     {
+
+        enum eStates
+        {
+            Initial,
+            SubjectChosser = 1,
+            ClassChooser,
+            TimeChooser,
+        }
+
+
         private static HttpClient _httpClient;
         public const string INVOCATION_NAME = "Nachhilfe";
 
@@ -27,33 +37,27 @@ namespace Nachhilfe
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context)
         {
             var resultText = "";
-           // input.Session
+
+            //********************************************* State
+            Object StateObject;
+            var x = input.Session.Attributes.TryGetValue("State", out StateObject);
+            eStates State = eStates.Initial;
+            if (x == true)
+            {
+                State = (eStates)StateObject;
+            }
+            //********************************************* 
+
+
             var requestType = input.GetRequestType();
+
             if (requestType == typeof(IntentRequest))
             {
-                var intentRequest = input.Request as IntentRequest;
-                intentRequest.
-                switch (intentRequest.Intent.Name)
-                {
-                    case "SubjectChooser":
-                        resultText = intentRequest.Intent.Slots["Subject"].Value;
-                        break;
-                    case "UserResponseMathe":
-                        resultText = intentRequest.Intent.Slots["Number"].Value;
-                        break;
-                    case "UebungsZeit":
-                        resultText = intentRequest.Intent.Slots["Duration"].Value;
-                        break;
-                    default:
-                        break;
-
-                }
-                return MakeSkillResponse(resultText, false);
-
+                return DoIntentRequest(input, ref resultText, State);
             }
             else if (requestType == typeof(LaunchRequest))
             {
-                return MakeSkillResponse("Welches Fach willst du üben?", false);
+                return DoLaunchRequest();
             }
             else if (requestType == typeof(SessionEndedRequest))
             {
@@ -67,6 +71,38 @@ namespace Nachhilfe
             }
         }
 
+        private SkillResponse DoLaunchRequest()
+        {
+            return MakeSkillResponse("Welches Fach willst du üben?", false);
+        }
+
+        private SkillResponse DoIntentRequest(SkillRequest input, ref string resultText, eStates State)
+        {
+            var intentRequest = input.Request as IntentRequest;
+
+
+
+            switch (intentRequest.Intent.Name)
+            {
+                case "SubjectChooser":
+                    input.Session.Attributes["State"] = eStates.SubjectChosser;
+                    var resValueSubject = intentRequest.Intent.Slots["Subject"].Value;
+                    input.Session.Attributes.Add("Subject", resValueSubject);
+                    resultText = "Für welche Klasse möchtest du üben.";
+                    break;
+                case "ClassChooser":
+                    input.Session.Attributes["State"] = eStates.ClassChooser;
+                    var resValueClass = intentRequest.Intent.Slots["Class"].Value;
+                    input.Session.Attributes.Add("Class", resValueClass);
+                    resultText = "Gut dann legen wir los.";
+                    //resultText += "5 +2";
+                    break;
+                default:
+                    break;
+
+            }
+            return MakeSkillResponse(resultText, false);
+        }
 
         private SkillResponse MakeSkillResponse(string outputSpeech, bool shouldEndSession, string repromptText = "Repromt")
         {
@@ -81,6 +117,8 @@ namespace Nachhilfe
                 response.Reprompt = new Reprompt() { OutputSpeech = new PlainTextOutputSpeech() { Text = repromptText } };
             }
 
+
+
             var skillResponse = new SkillResponse
             {
                 Response = response,
@@ -92,7 +130,7 @@ namespace Nachhilfe
 
         public async Task<SkillResponse> SubjectChooser(SkillRequest input, ILambdaContext context)
         {
-           return MakeSkillResponse("Welches Fach willst du üben?", false);
+            return MakeSkillResponse("Für welches Fach möchtest du üben?", false);
         }
     }
 }
