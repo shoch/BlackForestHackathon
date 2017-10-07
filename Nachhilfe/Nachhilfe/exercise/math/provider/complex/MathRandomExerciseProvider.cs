@@ -19,7 +19,7 @@ namespace Nachhilfe.exercise.math.provider.complex
         public MathExercise NextExercise()
         {
             // get one provider randomly
-            return exerciseProvider[random.Next(0, exerciseProvider.Length-1)].NextExercise();
+            return exerciseProvider[random.Next(0, exerciseProvider.Length)].NextExercise();
         }
     }
 }
