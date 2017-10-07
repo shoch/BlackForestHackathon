@@ -15,4 +15,8 @@
     <DotNetCliToolReference Include="Amazon.Lambda.Tools" Version="1.8.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="exercise\provider\math\complex\" />
+  </ItemGroup>
+
 </Project>

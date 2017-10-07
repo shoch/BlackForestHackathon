@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Nachhilfe
 {
-    public abstract class MathExercise : IExercise
+    public abstract class MathExercise : IExercise<int>
     {
         public int[] numbers { get; private set; }
 
@@ -13,15 +13,9 @@ namespace Nachhilfe
             this.numbers = numbers;
         }
 
-
-        public bool ValidateAnswer(string answer)
-        {
-            return Validate(Convert.ToInt32(answer));
-        }
-
         public abstract string GetQuestion();
         public abstract string GetSolution();
         public abstract int Solution();
-        public abstract bool Validate(int answer);
+        public abstract bool ValidateAnswer(int answer);
     }
 }

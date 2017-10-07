@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Nachhilfe
 {
-    class MathAdditionExercise : MathExercise
+    public class MathAdditionExercise : MathExercise
     {
 
         public MathAdditionExercise(int[] numbers)
@@ -35,7 +35,7 @@ namespace Nachhilfe
             return sum;
         }
 
-        public override bool ValidateAnswer(int answer)
+        public override bool Validate(int answer)
         {
             return answer == Solution();
         }

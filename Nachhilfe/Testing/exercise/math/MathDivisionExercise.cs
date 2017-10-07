@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Nachhilfe
 {
-    public class MathDivisionExercise : MathExercise
+    class MathDivisionExercise : MathExercise
     {
 
         public MathDivisionExercise(int[] numbers)
@@ -35,7 +35,7 @@ namespace Nachhilfe
             return sum;
         }
 
-        public override bool Validate(int answer)
+        public override bool ValidateAnswer(int answer)
         {
             return answer == Solution();
         }

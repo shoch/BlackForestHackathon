@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Nachhilfe
 {
-    public class MathDivisionExercise : MathExercise
+    class MathMultiplyExercise : MathExercise
     {
 
-        public MathDivisionExercise(int[] numbers)
+        public MathMultiplyExercise(int[] numbers)
             : base(numbers)
         {
             
@@ -15,12 +15,12 @@ namespace Nachhilfe
 
         public override string GetQuestion()
         {
-            return "Was ergibt " + string.Join(" geteilt durch ", numbers) + "?";
+            return "Was ergibt " + string.Join(" mal ", numbers) + "?";
         }
 
         public override string GetSolution()
         {
-            return string.Join(" geteilt durch ", numbers) + " ergibt " + Solution().ToString() + ".";
+            return string.Join(" mal ", numbers) + " ergibt " + Solution().ToString() + ".";
         }
 
         public override int Solution()
@@ -29,13 +29,13 @@ namespace Nachhilfe
 
             foreach (int number in numbers)
             {
-                sum /= number;
+                sum *= number;
             }
 
             return sum;
         }
 
-        public override bool Validate(int answer)
+        public override bool ValidateAnswer(int answer)
         {
             return answer == Solution();
         }
