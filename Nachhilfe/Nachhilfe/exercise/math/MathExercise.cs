@@ -26,7 +26,7 @@ namespace Nachhilfe
 
         public string GetSolution()
         {
-            return BuildExercises() + " ergibt " + Solution().ToString() + ".";
+            return Solution().ToString();
         }
 
         public abstract string BuildExercises();

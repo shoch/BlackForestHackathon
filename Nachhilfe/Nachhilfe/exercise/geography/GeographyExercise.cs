@@ -22,7 +22,8 @@ namespace Nachhilfe
 
         public string GetSolution()
         {
-            return "Die Hauptstadt von " + capital.country + " ist " + capital.name;
+            //return "Die Hauptstadt von " + capital.country + " ist " + capital.name;
+            return capital.name;
         }
 
         public bool ValidateAnswer(string answer)
