@@ -23,6 +23,7 @@ namespace Nachhilfe
             SubjectChosser = 1,
             ClassChooser,
             TimeChooser,
+            Result
         }
 
 
@@ -40,16 +41,24 @@ namespace Nachhilfe
 
             //********************************************* State
             Object StateObject;
-            if(input.Session.Attributes == null)
+            if (input.Session.Attributes == null)
             {
                 input.Session.Attributes = new Dictionary<string, object>();
+                input.Session.Attributes.Add("State", eStates.Initial.ToString());
             }
+            else if (!input.Session.Attributes.Any())
+            {
+                input.Session.Attributes.Add("State", eStates.Initial.ToString());
+            }
+
             var x = input.Session.Attributes.TryGetValue("State", out StateObject);
             eStates State = eStates.Initial;
             if (x == true)
             {
-                State = (eStates)StateObject;
+                State = (eStates)Enum.Parse(typeof(eStates), StateObject.ToString());
             }
+
+           // return MakeSkillResponse($"Unbekannter requestType", true, input.Session.Attributes);
             //********************************************* 
 
 
@@ -61,39 +70,34 @@ namespace Nachhilfe
             }
             else if (requestType == typeof(LaunchRequest))
             {
-                return DoLaunchRequest();
+                return MakeSkillResponse("Für welches Fach möchtest du üben?", false, input.Session.Attributes);
             }
-            //else if (requestType == typeof(SessionEndedRequest))
-            //{
-            //    return MakeSkillResponse("Anwendung unerwartet beendet", true);
-            //}
+            else if (requestType == typeof(SessionEndedRequest))
+            {
+                return MakeSkillResponse("Anwendung unerwartet beendet", true, input.Session.Attributes);
+            }
             else
             {
                 return MakeSkillResponse(
                         $"Unbekannter requestType",
-                        true);
+                        true, input.Session.Attributes);
             }
-        }
-
-        private SkillResponse DoLaunchRequest()
-        {
-            return MakeSkillResponse("Für welches Fach möchtest du üben?", false);
         }
 
         private SkillResponse DoIntentRequest(SkillRequest input, ref string resultText, eStates State)
         {
             var intentRequest = input.Request as IntentRequest;
-            
+
             switch (intentRequest.Intent.Name)
             {
                 case "SubjectChooser":
-                    input.Session.Attributes["State"] = eStates.SubjectChosser;
+                    input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
                     var resValueSubject = intentRequest.Intent.Slots["Subject"].Value;
                     input.Session.Attributes.Add("Subject", resValueSubject);
                     resultText = "Für welche Klasse möchtest du üben";
                     break;
                 case "ClassChooser":
-                    input.Session.Attributes["State"] = eStates.ClassChooser;
+                    input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
                     var resValueClass = intentRequest.Intent.Slots["Class"].Value;
                     input.Session.Attributes.Add("Class", resValueClass);
                     resultText = "Gut dann legen wir los";
@@ -101,32 +105,46 @@ namespace Nachhilfe
                     var Math = new MathAdditionExerciseProvider(new Random(), 2, 1, 10);
                     var e = Math.NextExercise();
                     resultText += e.GetQuestion();
-                    input.Session.Attributes.Add("MathObject", e);
+                    input.Session.Attributes.Add("MathObject", e.GetSolution());
                     break;
                 case "UserResponseMathe":
-                    //input.Session.Attributes["State"] = eStates.ClassChooser;
-                    //var resValueClass = intentRequest.Intent.Slots["Class"].Value;
-                    //input.Session.Attributes.Add("Class", resValueClass);
-                    //resultText = "Gut dann legen wir los";
-                    //// todo in abhäng. von Class anderer Provider
-                    //var Math = new MathAdditionExerciseProvider(new Random(), 2, 1, 10);
-                    //var e = Math.NextExercise();
-                    //resultText += e.GetQuestion();
-                    //input.Session.Attributes.Add("MathObject", e);
+                    // input.Session.Attributes["State"] = eStates.Result.ToString();
+
+                    var resValueMath = intentRequest.Intent.Slots["Number"].Value;
+
+                    Object res;
+                    var cast = input.Session.Attributes.TryGetValue("MathObject", out res);
+                    if (!cast)
+                    {
+                        resultText = "Fehler von uns ";
+                    }
+
+                    if (res.ToString()  == resValueMath)
+                    {
+                        resultText = "Richtig";
+                    }
+                    else
+                    {
+                        resultText = "Falsch Die korrekte Antwort ist " + res.ToString();
+                    }
+
                     break;
                 default:
+                    return MakeSkillResponse("Beenden", true, input.Session.Attributes);
                     break;
 
             }
-            return MakeSkillResponse(resultText, false);
+            return MakeSkillResponse(resultText, false, input.Session.Attributes);
         }
 
-        private SkillResponse MakeSkillResponse(string outputSpeech, bool shouldEndSession, string repromptText = "Repromt")
+        private SkillResponse MakeSkillResponse(string outputSpeech, bool shouldEndSession, Dictionary<string, object> sessionAttributes, string repromptText = "Repromt")
         {
             var response = new ResponseBody
             {
                 ShouldEndSession = shouldEndSession,
+
                 OutputSpeech = new PlainTextOutputSpeech { Text = outputSpeech }
+
             };
 
             if (repromptText != null)
@@ -134,13 +152,17 @@ namespace Nachhilfe
                 response.Reprompt = new Reprompt() { OutputSpeech = new PlainTextOutputSpeech() { Text = repromptText } };
             }
 
-
+            //var d = new Dictionary<string, object>();
+            //d.Add("test", 1); 
 
             var skillResponse = new SkillResponse
             {
+
                 Response = response,
+                SessionAttributes = sessionAttributes,
                 Version = "1.0"
             };
+
             return skillResponse;
         }
     }
