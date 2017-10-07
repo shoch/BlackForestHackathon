@@ -67,7 +67,7 @@ namespace Nachhilfe
             }
             else if (requestType == typeof(LaunchRequest))
             {
-                return MakeSkillResponse("Für welches Fach möchtest du üben?", false, input.Session.Attributes);
+                return MakeSkillResponse("Welches Fach möchtest du üben?", false, input.Session.Attributes);
             }
             else if (requestType == typeof(SessionEndedRequest))
             {
@@ -90,22 +90,45 @@ namespace Nachhilfe
                     {
                         break;
                     }
-                    input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
+
                     var resValueSubject = intentRequest.Intent.Slots["Subject"].Value;
-                    input.Session.Attributes.Add("Subject", resValueSubject);
-                    resultText = "Für welche Klasse möchtest du üben";
+
+                    if (resValueSubject == "mathe")
+                    {
+                        input.Session.Attributes.Add("Subject", resValueSubject);
+                        input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
+                        resultText = "Für welche Klasse möchtest du üben";
+                    }
+                    else
+                    {
+                        input.Session.Attributes["State"] = eStates.Initial.ToString();
+                        resultText = "Schulfach " + resValueSubject + " wird noch nicht unterstützt ";
+                        resultText += "<break time = '1s' /> Welches Fach möchtest du üben?";
+                    }
+
                     break;
                 case "ClassChooser":
                     if (State != eStates.SubjectChosser)
                     {
                         break;
                     }
-                    input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
+
                     var resValueClass = intentRequest.Intent.Slots["Class"].Value;
-                    input.Session.Attributes.Add("Class", resValueClass);
-                    resultText = "Gut dann legen wir los ";
-                    // todo in abhäng. von Class anderer Provider
-                    resultText += DoNewMathExercise(input);
+
+                    //if (resValueClass == "klasse 1")
+                    //{
+                        input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
+                        input.Session.Attributes.Add("Class", resValueClass);
+                        resultText = "<break time = '1s' /> Las uns anfange!";
+                        resultText += DoNewMathExercise(input);
+                    //}
+                    //else
+                    //{
+                    //    input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
+                    //    resultText = resValueClass + " wird noch nicht unterstützt ";
+                    //    resultText += "<break time = '1s' /> Für welche Klasse möchtest du üben?";
+                    //}
+
 
                     break;
                 case "UserResponseMathe":
@@ -124,16 +147,16 @@ namespace Nachhilfe
                         resultText = "Fehler von uns ";
                     }
                     else
-                    {      
+                    {
                         if (res.ToString() == resValueMath)
                         {
-                            resultText = "Richtig ";                           
+                            resultText = "Richtig ";
                         }
                         else
                         {
-                            resultText = "Falsch die korrekte Antwort ist " + res.ToString();                         
+                            resultText = "Falsch die korrekte Antwort ist " + res.ToString();
                         }
-                       
+
                         Object ExcersiceCounterObject;
                         var resb = input.Session.Attributes.TryGetValue("ExcersiceCounter", out ExcersiceCounterObject);
                         if (resb)
@@ -141,7 +164,7 @@ namespace Nachhilfe
                             int ExcersiceCounter = Convert.ToInt32(ExcersiceCounterObject);
                             if (ExcersiceCounter >= 3)
                             {
-                                return MakeSkillResponse("Super wir sind fertig", true, input.Session.Attributes);
+                                return MakeSkillResponse(resultText + "<break time = '0.5s' /> Super wir sind fertig", true, input.Session.Attributes);
                             }
                             else
                             {
@@ -151,7 +174,7 @@ namespace Nachhilfe
                     }
                     break;
 
-                 default:
+                default:
                     return MakeSkillResponse("Beenden", true, input.Session.Attributes);
                     break;
 
@@ -184,7 +207,7 @@ namespace Nachhilfe
             }
 
 
-            return e.GetQuestion();
+            return "<break time = '0.5s' />" + e.GetQuestion();
         }
 
         private SkillResponse MakeSkillResponse(string outputSpeech, bool shouldEndSession, Dictionary<string, object> sessionAttributes, string repromptText = "Repromt")
@@ -193,8 +216,15 @@ namespace Nachhilfe
             {
                 ShouldEndSession = shouldEndSession,
 
-                OutputSpeech = new PlainTextOutputSpeech { Text = outputSpeech }
+                OutputSpeech = new SsmlOutputSpeech {
+                    Ssml = "<speak>"+outputSpeech+"</speak>"
+                }
+
             };
+
+       //     response.Response.OutputSpeech.Ssml = "<break ...\>"
+       //response.Response.OutputSpeech.Ssml = output.ToString();
+       //     response.Response.OutputSpeech.Type = "SSML";
 
             if (repromptText != null)
             {
