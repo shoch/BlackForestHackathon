@@ -100,6 +100,12 @@ namespace Nachhilfe
                         input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
                         resultText = "Für welche Klasse möchtest du üben";
                     }
+                    else if (resValueSubject == "erdkunde")
+                    {
+                        input.Session.Attributes.Add("Subject", resValueSubject);
+                        input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
+                        resultText = "Für welche Klasse möchtest du üben";
+                    }
                     else if (resValueSubject == "Deutsch")
                     {
                         var outPutString = @"<prosody rate='x-slow'> Endlich Sommerferien! <break time = '0.5s' />
@@ -132,10 +138,20 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                     var resValueClass = intentRequest.Intent.Slots["Class"].Value;
                     //if (resValueClass == "1" || resValueClass.ToLower() == "eins" || resValueClass == "2" || resValueClass.ToLower() == "zwei")
                     //{
-                        input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
-                        input.Session.Attributes.Add("Class", resValueClass);
-                        resultText = "<break time = '1s' /> Lass uns anfangen!";
+                    input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
+                    input.Session.Attributes.Add("Class", resValueClass);
+                    resultText = "<break time = '1s' /> Lass uns anfangen!";
+
+                    if ("mathe" == input.Session.Attributes["Subject"].ToString())
+                    {
                         resultText += DoNewMathExercise(input);
+                    }
+                    else if ("erdkunde" == input.Session.Attributes["Subject"].ToString())
+                    {
+                        resultText += DoNewGeoExercise(input);
+                    }
+
+
                     //}
                     //else
                     //{
@@ -224,13 +240,118 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                         }
                     }
                     break;
+                case "UserResponseGeo":
+                    if (State != eStates.ClassChooser && State != eStates.Result)
+                    {
+                        break;
+                    }
+                    input.Session.Attributes["State"] = eStates.Result.ToString();
 
+                    var resValueGeo= intentRequest.Intent.Slots["InputString"].Value;
+
+                    Object resGeo;
+                    var castGeo = input.Session.Attributes.TryGetValue("GeoObject", out resGeo);
+                    if (!castGeo)
+                    {
+                        resultText = "Fehler von uns Geo";
+                    }
+                    else
+                    {
+                        if (resGeo.ToString() == resValueGeo)
+                        {
+
+                            if (input.Session.Attributes.Keys.Contains("CountCorrect"))
+                            {
+                                var CountCorrectExercises = Convert.ToInt32(input.Session.Attributes["CountCorrect"]);
+                                input.Session.Attributes["CountCorrect"] = CountCorrectExercises + 1;
+                            }
+                            else
+                            {
+                                input.Session.Attributes.Add("CountCorrect", 1);
+                            }
+
+                            resultText = "Richtig ";
+                        }
+                        else
+                        {
+
+                            if (input.Session.Attributes.Keys.Contains("CountFalse"))
+                            {
+                                var CountFalseExercises = Convert.ToInt32(input.Session.Attributes["CountFalse"]);
+                                input.Session.Attributes["CountFalse"] = CountFalseExercises + 1;
+                            }
+                            else
+                            {
+                                input.Session.Attributes.Add("CountFalse", 1);
+                            }
+
+                            resultText = "Falsch die korrekte Antwort ist " + resGeo.ToString();
+                        }
+
+                        Object ExcersiceCounterObject;
+                        var resb = input.Session.Attributes.TryGetValue("ExcersiceCounter", out ExcersiceCounterObject);
+                        if (resb)
+                        {
+                            int ExcersiceCounter = Convert.ToInt32(ExcersiceCounterObject);
+                            if (ExcersiceCounter >= 3)
+                            {
+                                int positiv = 0;
+                                int negativ = 0;
+
+                                if (input.Session.Attributes.Keys.Contains("CountCorrect"))
+                                {
+                                    positiv = Convert.ToInt32(input.Session.Attributes["CountCorrect"]);
+                                }
+                                if (input.Session.Attributes.Keys.Contains("CountFalse"))
+                                {
+                                    negativ = Convert.ToInt32(input.Session.Attributes["CountFalse"]);
+                                }
+                                int gesamt = positiv + negativ;
+                                var Statistik = $" <break time = '0.5s' /> Du hast {positiv} von {gesamt} richtig beantwortet";
+
+                                return MakeSkillResponse(resultText + "<break time = '0.5s' />  Wir sind fertig" + Statistik, true, input.Session.Attributes);
+                            }
+                            else
+                            {
+                                resultText += DoNewGeoExercise(input);
+                            }
+                        }
+                    }
+                    break;
                 default:
                     return MakeSkillResponse("Beenden", true, input.Session.Attributes);
                     break;
 
             }
             return MakeSkillResponse(resultText, false, input.Session.Attributes);
+        }
+
+        private string DoNewGeoExercise(SkillRequest input)
+        {
+            var ran = new Random();
+            var erdkunde = new GeographyExerciseProvider(ran);
+            var e = erdkunde.NextExercise();
+
+            if (input.Session.Attributes.Keys.Contains("GeoObject"))
+            {
+                input.Session.Attributes["GeoObject"] = e.GetSolution();
+            }
+            else
+            {
+                input.Session.Attributes.Add("GeoObject", e.GetSolution());
+            }
+
+            if (input.Session.Attributes.Keys.Contains("ExcersiceCounter"))
+            {
+                var excersiceCounterValue = Convert.ToInt32(input.Session.Attributes["ExcersiceCounter"]);
+                input.Session.Attributes["ExcersiceCounter"] = excersiceCounterValue + 1;
+            }
+            else
+            {
+                input.Session.Attributes.Add("ExcersiceCounter", 1);
+            }
+
+            return "<break time = '0.5s' />" + e.GetQuestion();
         }
 
         private static string DoNewMathExercise(SkillRequest input, int classValue = 1)
@@ -279,11 +400,11 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
 
             if (input.Session.Attributes.Keys.Contains("MathObject"))
             {
-                input.Session.Attributes["MathObject"] = e.Solution();
+                input.Session.Attributes["MathObject"] = e.GetSolution();
             }
             else
             {
-                input.Session.Attributes.Add("MathObject", e.Solution());
+                input.Session.Attributes.Add("MathObject", e.GetSolution());
             }
 
             if (input.Session.Attributes.Keys.Contains("ExcersiceCounter"))
