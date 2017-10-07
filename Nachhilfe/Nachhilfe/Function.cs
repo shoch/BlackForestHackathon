@@ -17,7 +17,6 @@ namespace Nachhilfe
 {
     public class Function
     {
-
         enum eStates
         {
             Initial,
@@ -27,14 +26,13 @@ namespace Nachhilfe
             Result
         }
 
+        //private static HttpClient _httpClient;
+        //public const string INVOCATION_NAME = "Nachhilfe";
 
-        private static HttpClient _httpClient;
-        public const string INVOCATION_NAME = "Nachhilfe";
-
-        public Function()
-        {
-            _httpClient = new HttpClient();
-        }
+        //public Function()
+        //{
+        //    _httpClient = new HttpClient();
+        //}
 
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context)
         {
@@ -177,16 +175,6 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                         resultText += DoNewGeoExercise(input);
                     }
 
-
-                    //}
-                    //else
-                    //{
-                    //    input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
-                    //    resultText = resValueClass + " wird noch nicht unterstützt ";
-                    //    resultText += "<break time = '1s' /> Für welche Klasse möchtest du üben?";
-                    //}
-
-
                     break;
                 case "UserResponseMathe":
                     if (State != eStates.ClassChooser && State != eStates.Result)
@@ -222,7 +210,6 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                         }
                         else
                         {
-
                             if (input.Session.Attributes.Keys.Contains("CountFalse"))
                             {
                                 var CountFalseExercises = Convert.ToInt32(input.Session.Attributes["CountFalse"]);
@@ -311,7 +298,6 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                             {
                                 input.Session.Attributes.Add("CountFalse", 1);
                             }
-                            //   resultText = resValueGeo;
                             resultText += "Falsch die korrekte Antwort ist " + resGeo.ToString();
                         }
 
@@ -441,9 +427,6 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                     break;
             }
 
-
-
-
             var e = Math.NextExercise();
 
             if (input.Session.Attributes.Keys.Contains("MathObject"))
@@ -465,7 +448,6 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                 input.Session.Attributes.Add("ExcersiceCounter", 1);
             }
 
-
             return "<break time = '0.5s' />" + e.GetQuestion();
         }
 
@@ -479,12 +461,7 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                 {
                     Ssml = "<speak>" + outputSpeech + "</speak>"
                 }
-
             };
-
-            //     response.Response.OutputSpeech.Ssml = "<break ...\>"
-            //response.Response.OutputSpeech.Ssml = output.ToString();
-            //     response.Response.OutputSpeech.Type = "SSML";
 
             if (repromptText != null)
             {
