@@ -63,15 +63,16 @@
     <Compile Include="exercise\provider\IExerciseProvider.cs" />
     <Compile Include="exercise\provider\math\MathAdditionExerciseProvider.cs" />
     <Compile Include="exercise\provider\math\MathSubstractionExerciseProvider.cs" />
+    <Compile Include="exercise\Wrapper.cs" />
+    <Compile Include="test\exercise\provider\math\ExerciseProviderTest.cs" />
+    <Compile Include="test\exercise\provider\math\MathAdditionExerciseProviderTest.cs" />
     <Compile Include="test\exercise\provider\math\MathSubstractionExerciseProviderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="exercise\provider\math\complex\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

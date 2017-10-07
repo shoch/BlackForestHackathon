@@ -4,10 +4,10 @@ using System.Text;
 
 namespace Nachhilfe
 {
-    interface IExercise<T>
+    public interface IExercise
     {
         string GetQuestion();
         string GetSolution();
-        bool ValidateAnswer(T answer);
+        bool ValidateAnswer(string answer);
     }
 }
