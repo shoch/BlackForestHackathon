@@ -20,10 +20,7 @@ namespace Nachhilfe
 
             foreach (Capital capital in capitals)
             {
-                string country = Countries.GetCountry(capital.country);
-                capital.country = country;
-
-                dict.Add(country, capital);
+                dict.Add(capital.country, capital);
             }
         }
 
