@@ -31,7 +31,7 @@ namespace Nachhilfe
                 numbers[i] = random.Next(min, max);
             }
 
-            return new MathAdditionExercise(numbers);
+            return new MathDivisionExercise(numbers);
         }
     }
 }
