@@ -10,15 +10,16 @@ namespace Nachhilfe.exercise.math.provider.complex
 
         private IExerciseProvider<MathExercise>[] exerciseProvider { get; }
 
-        public MathRandomExerciseProvider(IExerciseProvider<MathExercise>[] exerciseProvider)
+        public MathRandomExerciseProvider(Random random, IExerciseProvider<MathExercise>[] exerciseProvider)
         {
+            this.random = random;
             this.exerciseProvider = exerciseProvider;
         }
 
         public MathExercise NextExercise()
         {
             // get one provider randomly
-            return exerciseProvider[random.Next(0, exerciseProvider.Length)].NextExercise();
+            return exerciseProvider[random.Next(0, exerciseProvider.Length-1)].NextExercise();
         }
     }
 }
