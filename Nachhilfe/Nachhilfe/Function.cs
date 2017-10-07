@@ -103,8 +103,11 @@ namespace Nachhilfe
                     else if (resValueSubject == "erdkunde")
                     {
                         input.Session.Attributes.Add("Subject", resValueSubject);
-                        input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
-                        resultText = "Für welche Klasse möchtest du üben";
+                        input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
+                       // resultText = "Für welche Klasse möchtest du üben";
+                      
+                            resultText += DoNewGeoExercise(input);
+                        
                     }
                     else if (resValueSubject == "Deutsch")
                     {
@@ -257,9 +260,10 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                     }
                     else
                     {
-                        if (resGeo.ToString() == resValueGeo)
-                        {
+                        resultText = resValueGeo;
 
+                        if (resGeo.ToString().ToLower().Trim() == resValueGeo.ToLower().Trim())
+                        {
                             if (input.Session.Attributes.Keys.Contains("CountCorrect"))
                             {
                                 var CountCorrectExercises = Convert.ToInt32(input.Session.Attributes["CountCorrect"]);
@@ -284,8 +288,8 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                             {
                                 input.Session.Attributes.Add("CountFalse", 1);
                             }
-
-                            resultText = "Falsch die korrekte Antwort ist " + resGeo.ToString();
+                         //   resultText = resValueGeo;
+                            resultText += "Falsch die korrekte Antwort ist " + resGeo.ToString();
                         }
 
                         Object ExcersiceCounterObject;
