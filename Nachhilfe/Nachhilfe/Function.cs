@@ -104,10 +104,10 @@ namespace Nachhilfe
                     {
                         input.Session.Attributes.Add("Subject", resValueSubject);
                         input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
-                       // resultText = "Für welche Klasse möchtest du üben";
-                      
-                            resultText += DoNewGeoExercise(input);
-                        
+                        resultText = "<break time = '1s' /> Lass uns anfangen!"; ;
+
+                        resultText += DoNewGeoExercise(input);
+
                     }
                     else if (resValueSubject == "Deutsch")
                     {
@@ -139,6 +139,19 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                     }
 
                     var resValueClass = intentRequest.Intent.Slots["Class"].Value;
+
+                    switch (resValueClass)
+                    {
+                        case "anfaenger":
+                            break;
+                        case "fortgeschritten":
+                            break;
+                        case "profi":
+                            break;
+                    }
+
+
+
                     //if (resValueClass == "1" || resValueClass.ToLower() == "eins" || resValueClass == "2" || resValueClass.ToLower() == "zwei")
                     //{
                     input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
@@ -250,7 +263,7 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                     }
                     input.Session.Attributes["State"] = eStates.Result.ToString();
 
-                    var resValueGeo= intentRequest.Intent.Slots["InputString"].Value;
+                    var resValueGeo = intentRequest.Intent.Slots["InputString"].Value;
 
                     Object resGeo;
                     var castGeo = input.Session.Attributes.TryGetValue("GeoObject", out resGeo);
@@ -259,8 +272,7 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                         resultText = "Fehler von uns Geo";
                     }
                     else
-                    {
-                        resultText = resValueGeo;
+                    {                        
 
                         if (resGeo.ToString().ToLower().Trim() == resValueGeo.ToLower().Trim())
                         {
@@ -288,7 +300,7 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                             {
                                 input.Session.Attributes.Add("CountFalse", 1);
                             }
-                         //   resultText = resValueGeo;
+                            //   resultText = resValueGeo;
                             resultText += "Falsch die korrekte Antwort ist " + resGeo.ToString();
                         }
 
