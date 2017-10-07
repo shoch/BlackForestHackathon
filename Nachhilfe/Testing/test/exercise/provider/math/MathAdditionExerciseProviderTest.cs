@@ -6,7 +6,7 @@ using Nachhilfe;
 namespace Testing
 {
     [TestClass]
-    public class MathSubstractionExerciseProviderTest : ExerciseProviderTest
+    public class MathAdditionExerciseProviderTest : ExerciseProviderTest
     {
         [TestMethod]
         public void TestNextExercise()
@@ -14,8 +14,7 @@ namespace Testing
             int permutation = 4;
             int min = 1;
             int max = 10;
-            var provider = new MathSubstractionExerciseProvider(
-                new Random(), permutation, min, max);
+            var provider = new MathAdditionExerciseProvider(new Random(), permutation, min, max);
             base.TestMathExercise(provider, min, max);
         }
     }

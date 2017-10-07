@@ -35,7 +35,7 @@ namespace Nachhilfe
             return sum;
         }
 
-        public override bool ValidateAnswer(int answer)
+        public override bool Validate(int answer)
         {
             return answer == Solution();
         }
