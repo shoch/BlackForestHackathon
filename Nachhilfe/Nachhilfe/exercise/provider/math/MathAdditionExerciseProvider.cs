@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Nachhilfe
 {
-    abstract class MathAdditionExerciseProvider : IExerciseProvider<MathExercise>
+    public class MathAdditionExerciseProvider : IExerciseProvider<MathExercise>
     {
         private Random random { get; }
 

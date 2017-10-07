@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Nachhilfe
 {
-    abstract class MathExercise : IExercise<int>
+    public abstract class MathExercise : IExercise<int>
     {
         protected int[] numbers { get; }
 

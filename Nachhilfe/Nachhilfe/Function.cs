@@ -40,6 +40,10 @@ namespace Nachhilfe
 
             //********************************************* State
             Object StateObject;
+            if(input.Session.Attributes == null)
+            {
+                input.Session.Attributes = new Dictionary<string, object>();
+            }
             var x = input.Session.Attributes.TryGetValue("State", out StateObject);
             eStates State = eStates.Initial;
             if (x == true)
@@ -59,10 +63,10 @@ namespace Nachhilfe
             {
                 return DoLaunchRequest();
             }
-            else if (requestType == typeof(SessionEndedRequest))
-            {
-                return MakeSkillResponse("Anwendung unerwartet beendet", true);
-            }
+            //else if (requestType == typeof(SessionEndedRequest))
+            //{
+            //    return MakeSkillResponse("Anwendung unerwartet beendet", true);
+            //}
             else
             {
                 return MakeSkillResponse(
@@ -73,29 +77,42 @@ namespace Nachhilfe
 
         private SkillResponse DoLaunchRequest()
         {
-            return MakeSkillResponse("Welches Fach willst du üben?", false);
+            return MakeSkillResponse("Für welches Fach möchtest du üben?", false);
         }
 
         private SkillResponse DoIntentRequest(SkillRequest input, ref string resultText, eStates State)
         {
             var intentRequest = input.Request as IntentRequest;
-
-
-
+            
             switch (intentRequest.Intent.Name)
             {
                 case "SubjectChooser":
                     input.Session.Attributes["State"] = eStates.SubjectChosser;
                     var resValueSubject = intentRequest.Intent.Slots["Subject"].Value;
                     input.Session.Attributes.Add("Subject", resValueSubject);
-                    resultText = "Für welche Klasse möchtest du üben.";
+                    resultText = "Für welche Klasse möchtest du üben";
                     break;
                 case "ClassChooser":
                     input.Session.Attributes["State"] = eStates.ClassChooser;
                     var resValueClass = intentRequest.Intent.Slots["Class"].Value;
                     input.Session.Attributes.Add("Class", resValueClass);
-                    resultText = "Gut dann legen wir los.";
-                    //resultText += "5 +2";
+                    resultText = "Gut dann legen wir los";
+                    // todo in abhäng. von Class anderer Provider
+                    var Math = new MathAdditionExerciseProvider(new Random(), 2, 1, 10);
+                    var e = Math.NextExercise();
+                    resultText += e.GetQuestion();
+                    input.Session.Attributes.Add("MathObject", e);
+                    break;
+                case "UserResponseMathe":
+                    //input.Session.Attributes["State"] = eStates.ClassChooser;
+                    //var resValueClass = intentRequest.Intent.Slots["Class"].Value;
+                    //input.Session.Attributes.Add("Class", resValueClass);
+                    //resultText = "Gut dann legen wir los";
+                    //// todo in abhäng. von Class anderer Provider
+                    //var Math = new MathAdditionExerciseProvider(new Random(), 2, 1, 10);
+                    //var e = Math.NextExercise();
+                    //resultText += e.GetQuestion();
+                    //input.Session.Attributes.Add("MathObject", e);
                     break;
                 default:
                     break;
@@ -125,12 +142,6 @@ namespace Nachhilfe
                 Version = "1.0"
             };
             return skillResponse;
-        }
-
-
-        public async Task<SkillResponse> SubjectChooser(SkillRequest input, ILambdaContext context)
-        {
-            return MakeSkillResponse("Für welches Fach möchtest du üben?", false);
         }
     }
 }
