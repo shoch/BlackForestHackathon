@@ -68,7 +68,7 @@ namespace Nachhilfe
             }
             else if (requestType == typeof(LaunchRequest))
             {
-                return MakeSkillResponse("Welches Fach möchtest du üben?", false, input.Session.Attributes);
+                return MakeSkillResponse("Welches Schulfach möchtest du üben?", false, input.Session.Attributes);
             }
             else if (requestType == typeof(SessionEndedRequest))
             {
@@ -100,11 +100,26 @@ namespace Nachhilfe
                         input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
                         resultText = "Für welche Klasse möchtest du üben";
                     }
+                    else if (resValueSubject == "Deutsch")
+                    {
+                        var outPutString = @"<prosody rate='x-slow'> Endlich Sommerferien! <break time = '0.5s' />
+Mit dem Koffer am Flughafen können wir es kaum erwarten,  <break strength='weak' />
+bis das Taxi kommt.  <break time = '0.5s' /> 
+Der Mann hinter dem Steuer bringt uns zu Onkel Klaus. <break time = '0.5s' />
+Wir hoffen, <break strength='weak' />
+dass die Fahrt nicht so lange dauert und wir rechtzeitig am Treffpunkt ankommen.  <break time = '0.5s' />
+Onkel Klaus will uns mit einem Grillfest überraschen.   <break time = '0.5s' />
+Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> "; 
+                     
+                        return MakeSkillResponse("Das Diktat wird jetzt gestartet <break time = '2s' />" + outPutString, true,  input.Session.Attributes); 
+
+
+                    }
                     else
                     {
                         input.Session.Attributes["State"] = eStates.Initial.ToString();
                         resultText = "Schulfach " + resValueSubject + " wird noch nicht unterstützt ";
-                        resultText += "<break time = '1s' /> Welches Fach möchtest du üben?";
+                        resultText += "<break time = '1s' /> Welches Schulfach möchtest du üben?";
                     }
 
                     break;
