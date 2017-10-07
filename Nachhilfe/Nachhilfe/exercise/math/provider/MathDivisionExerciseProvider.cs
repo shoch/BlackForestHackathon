@@ -14,22 +14,24 @@ namespace Nachhilfe
 
         private int max { get; }
 
+        private MathMultiplyExerciseProvider multProvider { get; }
+
         public MathDivisionExerciseProvider(Random random, int permutation, int min ,int max)
         {
             this.min = min;
             this.max = max;
             this.permutation = permutation;
             this.random = random;
+
+            this.multProvider = new MathMultiplyExerciseProvider(random, permutation, min, max);
         }
 
         public MathExercise NextExercise()
         {
-            int[] numbers = new int[permutation];
-
-            for (int i = 0; i < permutation; i++)
-            {
-                numbers[i] = random.Next(min, max);
-            }
+            var ex = multProvider.NextExercise();
+            int[] numbers = ex.numbers;
+            // replace first number with 
+            numbers[0] = ex.Solution();
 
             return new MathDivisionExercise(numbers);
         }
