@@ -98,13 +98,13 @@ namespace Nachhilfe
                     {
                         input.Session.Attributes.Add("Subject", resValueSubject);
                         input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
-                        resultText = "Für welche Klasse möchtest du üben";
+                        resultText = "Auf welchem Schwierigkeitsgrad möchtest du üben";
                     }
                     else if (resValueSubject == "erdkunde")
                     {
                         input.Session.Attributes.Add("Subject", resValueSubject);
                         input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
-                        resultText = "<break time = '1s' /> Lass uns mit der Übung anfangen!"; 
+                        resultText = "<break time = '1s' /> Lass uns mit der Übung anfangen!";
 
                         resultText += DoNewGeoExercise(input);
 
@@ -139,17 +139,27 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                     }
 
                     var resValueClass = intentRequest.Intent.Slots["Class"].Value;
-
+                    int level = 1;
                     switch (resValueClass)
                     {
                         case "anfaenger":
+                            level = 1;
+                            break;
+                        case "anfänger":
+                            level = 1;
                             break;
                         case "fortgeschritten":
+                            level = 2;
+                            break;
+                        case "fortgeschrittener":
+                            level = 2;
                             break;
                         case "profi":
+                            level = 3;
                             break;
                     }
 
+                    input.Session.Attributes.Add("Level", level);
 
 
                     //if (resValueClass == "1" || resValueClass.ToLower() == "eins" || resValueClass == "2" || resValueClass.ToLower() == "zwei")
@@ -160,7 +170,7 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
 
                     if ("mathe" == input.Session.Attributes["Subject"].ToString())
                     {
-                        resultText += DoNewMathExercise(input);
+                        resultText += DoNewMathExercise(input, level);
                     }
                     else if ("erdkunde" == input.Session.Attributes["Subject"].ToString())
                     {
@@ -251,7 +261,8 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                             }
                             else
                             {
-                                resultText += DoNewMathExercise(input);
+                                int levelIn = Convert.ToInt32(input.Session.Attributes["Level"]);
+                                resultText += DoNewMathExercise(input, levelIn);
                             }
                         }
                     }
@@ -272,7 +283,7 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                         resultText = "Fehler von uns Geo";
                     }
                     else
-                    {                        
+                    {
 
                         if (resGeo.ToString().ToLower().Trim() == resValueGeo.ToLower().Trim())
                         {
@@ -376,42 +387,63 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
             int permutation = 0;
             int min = 0;
             int max = 0;
-            //var Math = new MathAdditionExerciseProvider(new Random(), 2, 1, 10);
+            MathRandomExerciseProvider Math;
             switch (classValue)
             {
                 case 1:
                     permutation = 2;
                     min = 1;
                     max = 10;
+                    Math = new MathRandomExerciseProvider(
+             ran,
+             new IExerciseProvider<MathExercise>[]{
+                    new MathAdditionExerciseProvider(ran, permutation,min, max),
+                    new MathSubstractionExerciseProvider(ran, permutation,min, max),
+                   // new MathDivisionExerciseProvider(ran, 2, 1, 10),
+                 //   new MathMultiplyExerciseProvider(ran, permutation,min, max)
+         });
                     break;
                 case 2:
                     permutation = 2;
                     min = 1;
                     max = 20;
-                    break;
-                case 3:
-                    permutation = 4;
-                    min = 7;
-                    max = 100;
-                    break;
-                case 4:
-                    permutation = 4;
-                    min = 9;
-                    max = 100;
-                    break;
-                default:
-                    break;
-            }
-
-
-            var Math = new MathRandomExerciseProvider(
-                ran,
-                new IExerciseProvider<MathExercise>[]{
+                    Math = new MathRandomExerciseProvider(
+            ran,
+            new IExerciseProvider<MathExercise>[]{
                     new MathAdditionExerciseProvider(ran, permutation,min, max),
                     new MathSubstractionExerciseProvider(ran, permutation,min, max),
                    // new MathDivisionExerciseProvider(ran, 2, 1, 10),
                     new MathMultiplyExerciseProvider(ran, permutation,min, max)
-            });
+        });
+                    break;
+                case 3:
+                    permutation = 3;
+                    min = 7;
+                    max = 100;
+                    Math = new MathRandomExerciseProvider(
+            ran,
+            new IExerciseProvider<MathExercise>[]{
+                    new MathAdditionExerciseProvider(ran, permutation,min, max),
+                    new MathSubstractionExerciseProvider(ran, permutation,min, max),
+                   // new MathDivisionExerciseProvider(ran, 2, 1, 10),
+                    new MathMultiplyExerciseProvider(ran, permutation,min, max)
+        });
+                    break;
+                default:
+                    Math = new MathRandomExerciseProvider(
+            ran,
+            new IExerciseProvider<MathExercise>[]{
+                    new MathAdditionExerciseProvider(ran, permutation,min, max),
+                    new MathSubstractionExerciseProvider(ran, permutation,min, max),
+                   // new MathDivisionExerciseProvider(ran, 2, 1, 10),
+                    new MathMultiplyExerciseProvider(ran, permutation,min, max)
+        });
+                    break;
+            }
+
+
+
+
             var e = Math.NextExercise();
 
             if (input.Session.Attributes.Keys.Contains("MathObject"))
