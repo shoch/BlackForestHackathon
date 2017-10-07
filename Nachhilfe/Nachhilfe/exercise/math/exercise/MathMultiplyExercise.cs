@@ -20,7 +20,7 @@ namespace Nachhilfe
 
         public override int Solution()
         {
-            int sum = 0;
+            int sum = 1;
 
             foreach (int number in numbers)
             {

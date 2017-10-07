@@ -130,19 +130,19 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                     }
 
                     var resValueClass = intentRequest.Intent.Slots["Class"].Value;
-                    if (resValueClass == "1" || resValueClass.ToLower() == "eins" || resValueClass == "2" || resValueClass.ToLower() == "zwei")
-                    {
+                    //if (resValueClass == "1" || resValueClass.ToLower() == "eins" || resValueClass == "2" || resValueClass.ToLower() == "zwei")
+                    //{
                         input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
                         input.Session.Attributes.Add("Class", resValueClass);
                         resultText = "<break time = '1s' /> Lass uns anfangen!";
                         resultText += DoNewMathExercise(input);
-                    }
-                    else
-                    {
-                        input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
-                        resultText = resValueClass + " wird noch nicht unterstützt ";
-                        resultText += "<break time = '1s' /> Für welche Klasse möchtest du üben?";
-                    }
+                    //}
+                    //else
+                    //{
+                    //    input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
+                    //    resultText = resValueClass + " wird noch nicht unterstützt ";
+                    //    resultText += "<break time = '1s' /> Für welche Klasse möchtest du üben?";
+                    //}
 
 
                     break;
@@ -233,7 +233,7 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
             return MakeSkillResponse(resultText, false, input.Session.Attributes);
         }
 
-        private static string DoNewMathExercise(SkillRequest input, int classValue)
+        private static string DoNewMathExercise(SkillRequest input, int classValue = 1)
         {
             var ran = new Random();
             int permutation = 0;
