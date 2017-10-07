@@ -8,6 +8,7 @@ using Alexa.NET.Request.Type;
 using Alexa.NET.Response;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.Serialization;
+using Nachhilfe.exercise.math.provider.complex;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -118,7 +119,7 @@ namespace Nachhilfe
                     //{
                     input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
                     input.Session.Attributes.Add("Class", resValueClass);
-                    resultText = "<break time = '1s' /> Las uns anfange!";
+                    resultText = "<break time = '1s' /> Lass uns anfangen!";
                     resultText += DoNewMathExercise(input);
                     //}
                     //else
@@ -147,8 +148,6 @@ namespace Nachhilfe
                     }
                     else
                     {
-
-
                         if (res.ToString() == resValueMath)
                         {
 
@@ -201,7 +200,7 @@ namespace Nachhilfe
                                 int gesamt = positiv + negativ;
                                 var Statistik = $" <break time = '0.5s' /> Du hast {positiv} von {gesamt} richtig beantwortet";
 
-                                return MakeSkillResponse(resultText + "<break time = '0.5s' /> Super wir sind fertig" + Statistik, true, input.Session.Attributes);
+                                return MakeSkillResponse(resultText + "<break time = '0.5s' /> Supi wir sind fertig" + Statistik, true, input.Session.Attributes);
                             }
                             else
                             {
@@ -221,7 +220,17 @@ namespace Nachhilfe
 
         private static string DoNewMathExercise(SkillRequest input)
         {
-            var Math = new MathAdditionExerciseProvider(new Random(), 2, 1, 10);
+            //var Math = new MathAdditionExerciseProvider(new Random(), 2, 1, 10);
+
+            var ran = new Random();
+            var Math = new MathRandomExerciseProvider(
+                ran,
+                new IExerciseProvider<MathExercise>[]{
+                    new MathAdditionExerciseProvider(ran, 2, 1, 10),
+                    new MathSubstractionExerciseProvider(ran, 2, 1, 10),
+                    new MathSubstractionExerciseProvider(ran, 2, 1, 10),
+                    new MathMultiplyExerciseProvider(ran, 2, 1, 10)
+            });
             var e = Math.NextExercise();
 
             if (input.Session.Attributes.Keys.Contains("MathObject"))
