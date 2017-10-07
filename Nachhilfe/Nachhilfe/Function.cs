@@ -104,7 +104,7 @@ namespace Nachhilfe
                     {
                         input.Session.Attributes.Add("Subject", resValueSubject);
                         input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
-                        resultText = "<break time = '1s' /> Lass uns anfangen!"; ;
+                        resultText = "<break time = '1s' /> Lass uns mit der Übung anfangen!"; 
 
                         resultText += DoNewGeoExercise(input);
 
@@ -156,7 +156,7 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                     //{
                     input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
                     input.Session.Attributes.Add("Class", resValueClass);
-                    resultText = "<break time = '1s' /> Lass uns anfangen!";
+                    resultText = "<break time = '1s' /> Lass uns mit der Übung anfangen!";
 
                     if ("mathe" == input.Session.Attributes["Subject"].ToString())
                     {
@@ -325,7 +325,7 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                                 int gesamt = positiv + negativ;
                                 var Statistik = $" <break time = '0.5s' /> Du hast {positiv} von {gesamt} richtig beantwortet";
 
-                                return MakeSkillResponse(resultText + "<break time = '0.5s' />  Wir sind fertig" + Statistik, true, input.Session.Attributes);
+                                return MakeSkillResponse(resultText + "<break time = '0.5s' />  Danke. Die Übung ist zu ende." + Statistik, true, input.Session.Attributes);
                             }
                             else
                             {
