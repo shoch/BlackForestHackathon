@@ -200,7 +200,7 @@ namespace Nachhilfe
                                 int gesamt = positiv + negativ;
                                 var Statistik = $" <break time = '0.5s' /> Du hast {positiv} von {gesamt} richtig beantwortet";
 
-                                return MakeSkillResponse(resultText + "<break time = '0.5s' /> Supi wir sind fertig" + Statistik, true, input.Session.Attributes);
+                                return MakeSkillResponse(resultText + "<break time = '0.5s' />  Wir sind fertig" + Statistik, true, input.Session.Attributes);
                             }
                             else
                             {
@@ -228,7 +228,7 @@ namespace Nachhilfe
                 new IExerciseProvider<MathExercise>[]{
                     new MathAdditionExerciseProvider(ran, 2, 1, 10),
                     new MathSubstractionExerciseProvider(ran, 2, 1, 10),
-                    new MathSubstractionExerciseProvider(ran, 2, 1, 10),
+                   // new MathDivisionExerciseProvider(ran, 2, 1, 10),
                     new MathMultiplyExerciseProvider(ran, 2, 1, 10)
             });
             var e = Math.NextExercise();
