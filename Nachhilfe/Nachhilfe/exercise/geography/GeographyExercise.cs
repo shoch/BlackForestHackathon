@@ -23,12 +23,12 @@ namespace Nachhilfe
         public string GetSolution()
         {
             //return "Die Hauptstadt von " + capital.country + " ist " + capital.name;
-            return capital.name;
+            return capital.city;
         }
 
         public bool ValidateAnswer(string answer)
         {
-            return answer.Equals(capital.name);
+            return answer.Equals(capital.city);
         }
     }
 }
