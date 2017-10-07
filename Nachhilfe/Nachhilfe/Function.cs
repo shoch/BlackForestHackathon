@@ -114,13 +114,12 @@ namespace Nachhilfe
                     }
 
                     var resValueClass = intentRequest.Intent.Slots["Class"].Value;
-
                     //if (resValueClass == "klasse 1")
                     //{
-                        input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
-                        input.Session.Attributes.Add("Class", resValueClass);
-                        resultText = "<break time = '1s' /> Las uns anfange!";
-                        resultText += DoNewMathExercise(input);
+                    input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
+                    input.Session.Attributes.Add("Class", resValueClass);
+                    resultText = "<break time = '1s' /> Las uns anfange!";
+                    resultText += DoNewMathExercise(input);
                     //}
                     //else
                     //{
@@ -148,12 +147,36 @@ namespace Nachhilfe
                     }
                     else
                     {
+
+
                         if (res.ToString() == resValueMath)
                         {
+
+                            if (input.Session.Attributes.Keys.Contains("CountCorrect"))
+                            {
+                                var CountCorrectExercises = Convert.ToInt32(input.Session.Attributes["CountCorrect"]);
+                                input.Session.Attributes["CountCorrect"] = CountCorrectExercises + 1;
+                            }
+                            else
+                            {
+                                input.Session.Attributes.Add("CountCorrect", 1);
+                            }
+
                             resultText = "Richtig ";
                         }
                         else
                         {
+
+                            if (input.Session.Attributes.Keys.Contains("CountFalse"))
+                            {
+                                var CountFalseExercises = Convert.ToInt32(input.Session.Attributes["CountFalse"]);
+                                input.Session.Attributes["CountFalse"] = CountFalseExercises + 1;
+                            }
+                            else
+                            {
+                                input.Session.Attributes.Add("CountFalse", 1);
+                            }
+
                             resultText = "Falsch die korrekte Antwort ist " + res.ToString();
                         }
 
@@ -164,7 +187,21 @@ namespace Nachhilfe
                             int ExcersiceCounter = Convert.ToInt32(ExcersiceCounterObject);
                             if (ExcersiceCounter >= 3)
                             {
-                                return MakeSkillResponse(resultText + "<break time = '0.5s' /> Super wir sind fertig", true, input.Session.Attributes);
+                                int positiv = 0;
+                                int negativ = 0;
+                            
+                                if (input.Session.Attributes.Keys.Contains("CountCorrect"))
+                                {
+                                    positiv = Convert.ToInt32(input.Session.Attributes["CountCorrect"]);                                    
+                                }
+                                if (input.Session.Attributes.Keys.Contains("CountFalse"))
+                                {
+                                    negativ = Convert.ToInt32(input.Session.Attributes["CountFalse"]);                                   
+                                }
+                                int gesamt = positiv + negativ;
+                                var Statistik = $" <break time = '0.5s' /> Du hast {positiv} von {gesamt} richtig beantwortet";
+
+                                return MakeSkillResponse(resultText + "<break time = '0.5s' /> Super wir sind fertig" + Statistik, true, input.Session.Attributes);
                             }
                             else
                             {
@@ -216,15 +253,16 @@ namespace Nachhilfe
             {
                 ShouldEndSession = shouldEndSession,
 
-                OutputSpeech = new SsmlOutputSpeech {
-                    Ssml = "<speak>"+outputSpeech+"</speak>"
+                OutputSpeech = new SsmlOutputSpeech
+                {
+                    Ssml = "<speak>" + outputSpeech + "</speak>"
                 }
 
             };
 
-       //     response.Response.OutputSpeech.Ssml = "<break ...\>"
-       //response.Response.OutputSpeech.Ssml = output.ToString();
-       //     response.Response.OutputSpeech.Type = "SSML";
+            //     response.Response.OutputSpeech.Ssml = "<break ...\>"
+            //response.Response.OutputSpeech.Ssml = output.ToString();
+            //     response.Response.OutputSpeech.Type = "SSML";
 
             if (repromptText != null)
             {
