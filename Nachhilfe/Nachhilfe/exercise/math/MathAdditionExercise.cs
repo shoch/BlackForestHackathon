@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Nachhilfe
 {
-    class MathAdditionExercise : MathExercise
+    public class MathAdditionExercise : MathExercise
     {
 
         public MathAdditionExercise(int[] numbers)

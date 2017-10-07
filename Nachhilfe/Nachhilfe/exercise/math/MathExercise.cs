@@ -6,7 +6,7 @@ namespace Nachhilfe
 {
     public abstract class MathExercise : IExercise<int>
     {
-        protected int[] numbers { get; }
+        public int[] numbers { get; private set; }
 
         public MathExercise(int[] numbers)
         {
