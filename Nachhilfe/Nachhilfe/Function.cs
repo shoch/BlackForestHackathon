@@ -17,12 +17,7 @@ namespace Nachhilfe
     public class Function
     {
 
-        /// <summary>
-        /// A simple function that takes a string and does a ToUpper
-        /// </summary>
-        /// <param name="input"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
+
         private static HttpClient _httpClient;
         public const string INVOCATION_NAME = "Country Info";
 
@@ -33,39 +28,55 @@ namespace Nachhilfe
 
         public async Task<SkillResponse> FunctionHandler(SkillRequest input, ILambdaContext context)
         {
+            var resultText = "";
 
             var requestType = input.GetRequestType();
             if (requestType == typeof(IntentRequest))
             {
                 var intentRequest = input.Request as IntentRequest;
-              //  var countryRequested = intentRequest.Intent.Slots["Country"].Value;
 
-                return MakeSkillResponse(
-                        $"Test1",
-                        true);
+                switch (intentRequest.Intent.Name)
+                {
+                    case "SubjectChooser":
+                        resultText = intentRequest.Intent.Slots["Subject"].Value;
+                        break;
+                    default:
+                        break;
+
+                }
+                return MakeSkillResponse(resultText, false);
+
+            }
+            else if (requestType == typeof(LaunchRequest))
+            {
+                return MakeSkillResponse("Welches Fach willst du üben?", false);
+            }
+            else if (requestType == typeof(SessionEndedRequest))
+            {
+                return MakeSkillResponse("Anwendung unerwartet beendet", true);
             }
             else
             {
                 return MakeSkillResponse(
-                        $"I don't know how to handle this intent. Please say something like Alexa, ask {INVOCATION_NAME} about Canada.",
+                        $"Unbekannter requestType",
                         true);
             }
         }
 
 
-        private SkillResponse MakeSkillResponse(string outputSpeech, 
-            bool shouldEndSession, 
-            string repromptText = "Just say, tell me about Canada to learn more. To exit, say, exit.")
+        private SkillResponse MakeSkillResponse(string outputSpeech,
+            bool shouldEndSession,
+            string repromptText = "Repromt")
         {
             var response = new ResponseBody
             {
                 ShouldEndSession = shouldEndSession,
-                OutputSpeech = new PlainTextOutputSpeech {Text = outputSpeech}
+                OutputSpeech = new PlainTextOutputSpeech { Text = outputSpeech }
             };
 
             if (repromptText != null)
             {
-                response.Reprompt = new Reprompt() {OutputSpeech = new PlainTextOutputSpeech() {Text = repromptText}};
+                response.Reprompt = new Reprompt() { OutputSpeech = new PlainTextOutputSpeech() { Text = repromptText } };
             }
 
             var skillResponse = new SkillResponse
