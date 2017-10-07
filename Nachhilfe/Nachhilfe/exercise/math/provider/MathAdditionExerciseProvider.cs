@@ -26,14 +26,14 @@ namespace Nachhilfe
         {
             int[] numbers = new int[permutation];
             int tmin = min;
-            int tmax = max-1;
+            int tmax = max - ((permutation - 1) * min);
 
             for (int i = 0; i < permutation; i++)
             {
                 int n = random.Next(tmin, tmax);
                 numbers[i] = n;
                 // correct tmax
-                tmax -= n;
+                tmax -= (n - min);
             }
 
             return new MathAdditionExercise(numbers);

@@ -25,11 +25,11 @@ namespace Nachhilfe
 
         public override int Solution()
         {
-            int sum = 0;
+            int sum = numbers[0];
 
-            foreach (int number in numbers)
+            for (int i = 1; i < numbers.Length; i++)
             {
-                sum += number;
+                sum -= numbers[i];
             }
 
             return sum;

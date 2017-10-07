@@ -41,7 +41,7 @@ namespace Nachhilfe
             int[] numbers = new int[permutation];
 
             int first = random.Next(firstMin, max);
-            numbers[1] = first;
+            numbers[0] = first;
 
             MathAdditionExerciseProvider pAddExercise = new MathAdditionExerciseProvider(random, permutation-1, min, first - min);
 
