@@ -109,9 +109,9 @@ Der Mann hinter dem Steuer bringt uns zu Onkel Klaus. <break time = '0.5s' />
 Wir hoffen, <break strength='weak' />
 dass die Fahrt nicht so lange dauert und wir rechtzeitig am Treffpunkt ankommen.  <break time = '0.5s' />
 Onkel Klaus will uns mit einem Grillfest überraschen.   <break time = '0.5s' />
-Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> "; 
-                     
-                        return MakeSkillResponse("Das Diktat wird jetzt gestartet <break time = '2s' />" + outPutString, true,  input.Session.Attributes); 
+Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
+
+                        return MakeSkillResponse("Das Diktat wird jetzt gestartet <break time = '2s' />" + outPutString, true, input.Session.Attributes);
 
 
                     }
@@ -130,19 +130,19 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                     }
 
                     var resValueClass = intentRequest.Intent.Slots["Class"].Value;
-                    //if (resValueClass == "klasse 1")
-                    //{
-                    input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
-                    input.Session.Attributes.Add("Class", resValueClass);
-                    resultText = "<break time = '1s' /> Lass uns anfangen!";
-                    resultText += DoNewMathExercise(input);
-                    //}
-                    //else
-                    //{
-                    //    input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
-                    //    resultText = resValueClass + " wird noch nicht unterstützt ";
-                    //    resultText += "<break time = '1s' /> Für welche Klasse möchtest du üben?";
-                    //}
+                    if (resValueClass == "1" || resValueClass.ToLower() == "eins" || resValueClass == "2" || resValueClass.ToLower() == "zwei")
+                    {
+                        input.Session.Attributes["State"] = eStates.ClassChooser.ToString();
+                        input.Session.Attributes.Add("Class", resValueClass);
+                        resultText = "<break time = '1s' /> Lass uns anfangen!";
+                        resultText += DoNewMathExercise(input);
+                    }
+                    else
+                    {
+                        input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
+                        resultText = resValueClass + " wird noch nicht unterstützt ";
+                        resultText += "<break time = '1s' /> Für welche Klasse möchtest du üben?";
+                    }
 
 
                     break;
@@ -203,14 +203,14 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                             {
                                 int positiv = 0;
                                 int negativ = 0;
-                            
+
                                 if (input.Session.Attributes.Keys.Contains("CountCorrect"))
                                 {
-                                    positiv = Convert.ToInt32(input.Session.Attributes["CountCorrect"]);                                    
+                                    positiv = Convert.ToInt32(input.Session.Attributes["CountCorrect"]);
                                 }
                                 if (input.Session.Attributes.Keys.Contains("CountFalse"))
                                 {
-                                    negativ = Convert.ToInt32(input.Session.Attributes["CountFalse"]);                                   
+                                    negativ = Convert.ToInt32(input.Session.Attributes["CountFalse"]);
                                 }
                                 int gesamt = positiv + negativ;
                                 var Statistik = $" <break time = '0.5s' /> Du hast {positiv} von {gesamt} richtig beantwortet";
@@ -233,18 +233,47 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
             return MakeSkillResponse(resultText, false, input.Session.Attributes);
         }
 
-        private static string DoNewMathExercise(SkillRequest input)
+        private static string DoNewMathExercise(SkillRequest input, int classValue)
         {
-            //var Math = new MathAdditionExerciseProvider(new Random(), 2, 1, 10);
-
             var ran = new Random();
+            int permutation = 0;
+            int min = 0;
+            int max = 0;
+            //var Math = new MathAdditionExerciseProvider(new Random(), 2, 1, 10);
+            switch (classValue)
+            {
+                case 1:
+                    permutation = 2;
+                    min = 1;
+                    max = 10;
+                    break;
+                case 2:
+                    permutation = 2;
+                    min = 1;
+                    max = 20;
+                    break;
+                case 3:
+                    permutation = 4;
+                    min = 7;
+                    max = 100;
+                    break;
+                case 4:
+                    permutation = 4;
+                    min = 9;
+                    max = 100;
+                    break;
+                default:
+                    break;
+            }
+
+
             var Math = new MathRandomExerciseProvider(
                 ran,
                 new IExerciseProvider<MathExercise>[]{
-                    new MathAdditionExerciseProvider(ran, 2, 1, 10),
-                    new MathSubstractionExerciseProvider(ran, 2, 1, 10),
+                    new MathAdditionExerciseProvider(ran, permutation,min, max),
+                    new MathSubstractionExerciseProvider(ran, permutation,min, max),
                    // new MathDivisionExerciseProvider(ran, 2, 1, 10),
-                    new MathMultiplyExerciseProvider(ran, 2, 1, 10)
+                    new MathMultiplyExerciseProvider(ran, permutation,min, max)
             });
             var e = Math.NextExercise();
 
