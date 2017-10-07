@@ -10,17 +10,12 @@ namespace Nachhilfe
         public MathMultiplyExercise(int[] numbers)
             : base(numbers)
         {
-            
+
         }
 
-        public override string GetQuestion()
+        public override string BuildExercises()
         {
-            return "Was ergibt " + string.Join(" mal ", numbers) + "?";
-        }
-
-        public override string GetSolution()
-        {
-            return string.Join(" mal ", numbers) + " ergibt " + Solution().ToString() + ".";
+            return string.Join(" mal ", numbers);
         }
 
         public override int Solution()

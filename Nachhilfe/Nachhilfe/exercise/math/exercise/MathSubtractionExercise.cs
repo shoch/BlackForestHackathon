@@ -10,17 +10,12 @@ namespace Nachhilfe
         public MathSubtractionExercise(int[] numbers)
             : base(numbers)
         {
-            
+
         }
 
-        public override string GetQuestion()
+        public override string BuildExercises()
         {
-            return "Was ergibt " + string.Join(" minus ", numbers) + "?";
-        }
-
-        public override string GetSolution()
-        {
-            return string.Join(" minus ", numbers) + " ergibt " + Solution().ToString() + ".";
+            return string.Join(" minus ", numbers);
         }
 
         public override int Solution()

@@ -13,14 +13,9 @@ namespace Nachhilfe
             
         }
 
-        public override string GetQuestion()
+        public override string BuildExercises()
         {
-            return "Was ergibt " + string.Join(" plus ", numbers) + "?";
-        }
-
-        public override string GetSolution()
-        {
-            return string.Join(" plus ", numbers) + " ergibt " + Solution().ToString() + ".";
+            return string.Join(" plus ", numbers);
         }
 
         public override int Solution()

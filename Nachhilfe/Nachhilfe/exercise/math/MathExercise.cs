@@ -19,8 +19,17 @@ namespace Nachhilfe
             return Validate(Convert.ToInt32(answer));
         }
 
-        public abstract string GetQuestion();
-        public abstract string GetSolution();
+        public string GetQuestion()
+        {
+            return "Was ergibt " + BuildExercises() + "?";
+        }
+
+        public string GetSolution()
+        {
+            return BuildExercises() + " ergibt " + Solution().ToString() + ".";
+        }
+
+        public abstract string BuildExercises();
         public abstract int Solution();
         public abstract bool Validate(int answer);
     }
