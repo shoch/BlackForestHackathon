@@ -96,7 +96,7 @@ namespace Nachhilfe
                     {
                         input.Session.Attributes.Add("Subject", resValueSubject);
                         input.Session.Attributes["State"] = eStates.SubjectChosser.ToString();
-                        resultText = "Auf welchem Schwierigkeitsgrad möchtest du üben";
+                        resultText = "Auf welchem Grundschulniveau möchtest du üben";
                     }
                     else if (resValueSubject == "erdkunde")
                     {
@@ -244,7 +244,7 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                                 int gesamt = positiv + negativ;
                                 var Statistik = $" <break time = '0.5s' /> Du hast {positiv} von {gesamt} richtig beantwortet";
 
-                                return MakeSkillResponse(resultText + "<break time = '0.5s' />  Danke. Die Übung ist zu ende." + Statistik, true, input.Session.Attributes);
+                                return MakeSkillResponse(resultText + "<break time = '1s' />  Danke. Die Übung ist zu ende." + Statistik, true, input.Session.Attributes);
                             }
                             else
                             {
@@ -322,7 +322,7 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
                                 int gesamt = positiv + negativ;
                                 var Statistik = $" <break time = '0.5s' /> Du hast {positiv} von {gesamt} richtig beantwortet";
 
-                                return MakeSkillResponse(resultText + "<break time = '0.5s' />  Danke. Die Übung ist zu ende." + Statistik, true, input.Session.Attributes);
+                                return MakeSkillResponse(resultText + "<break time = '1s' />  Danke. Die Übung ist zu ende." + Statistik, true, input.Session.Attributes);
                             }
                             else
                             {
@@ -370,9 +370,9 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
         private static string DoNewMathExercise(SkillRequest input, int classValue = 1)
         {
             var ran = new Random();
-            int permutation = 0;
-            int min = 0;
-            int max = 0;
+            int permutation = 2;
+            int min = 1;
+            int max = 10;
             MathRandomExerciseProvider Math;
             switch (classValue)
             {
@@ -384,9 +384,7 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
              ran,
              new IExerciseProvider<MathExercise>[]{
                     new MathAdditionExerciseProvider(ran, permutation,min, max),
-                    new MathSubstractionExerciseProvider(ran, permutation,min, max),
-                   // new MathDivisionExerciseProvider(ran, 2, 1, 10),
-                 //   new MathMultiplyExerciseProvider(ran, permutation,min, max)
+                    new MathSubstractionExerciseProvider(ran, permutation,min, max)                  
          });
                     break;
                 case 2:
@@ -398,13 +396,12 @@ Ich bin sehr gespannt darauf! <break time = '0.5s' /> </prosody> ";
             new IExerciseProvider<MathExercise>[]{
                     new MathAdditionExerciseProvider(ran, permutation,min, max),
                     new MathSubstractionExerciseProvider(ran, permutation,min, max),
-                   // new MathDivisionExerciseProvider(ran, 2, 1, 10),
                     new MathMultiplyExerciseProvider(ran, permutation,min, max)
         });
                     break;
                 case 3:
                     permutation = 3;
-                    min = 7;
+                    min = 1;
                     max = 100;
                     Math = new MathRandomExerciseProvider(
             ran,
